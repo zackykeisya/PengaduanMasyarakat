@@ -2,29 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Pengaduan;
+use App\Models\User;
 use Illuminate\Http\Request;
 
-class DashboardController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-
-     public function dashboard()
-{
-    $pengaduans = Pengaduan::all(); // Ambil semua data pengaduan
-    return view('guest.dashboard', compact('pengaduans'));
-}
-public function index()
-{
-    // Ambil data pengaduan dari database
-    $pengaduans = Pengaduan::all(); // Anda bisa menggunakan query yang lebih spesifik, misalnya untuk filter
-
-    // Kirim data ke view
-    return view('guest.dashboard', compact('pengaduans'));
-}
-
+    public function index()
+    {
+        //
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -45,7 +34,7 @@ public function index()
     /**
      * Display the specified resource.
      */
-    public function show(Dashboard $dashboard)
+    public function show(User $user)
     {
         //
     }
@@ -53,7 +42,7 @@ public function index()
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Dashboard $dashboard)
+    public function edit(User $user)
     {
         //
     }
@@ -61,7 +50,7 @@ public function index()
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Dashboard $dashboard)
+    public function update(Request $request, User $user)
     {
         //
     }
@@ -69,9 +58,8 @@ public function index()
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Dashboard $dashboard)
+    public function destroy(User $user)
     {
         //
     }
 }
-

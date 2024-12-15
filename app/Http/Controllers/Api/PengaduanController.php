@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Pengaduan;
@@ -51,7 +51,7 @@ class PengaduanController extends Controller
         
 
         if ($pengaduan) {
-            return redirect()->route('guest.dashboard')->with('success', 'Pengaduan berhasil dibuat.');
+            return redirect()->route('pengaduan.dashboard')->with('success', 'Pengaduan berhasil dibuat.');
         } else {
             return redirect()->back()->with('error', 'Gagal membuat pengaduan.')->withErrors(['description' => 'The description field is required.']);
         }
@@ -78,26 +78,40 @@ class PengaduanController extends Controller
     }
     
 
-    public function show($id)
-    {
-        $pengaduan = Pengaduan::with('comments')->findOrFail($id);
-        return view('pengaduan.show', compact('pengaduan'));
-    }
-
     public function vote($id)
-    {
-        $pengaduan = Pengaduan::findOrFail($id);
-        $pengaduan->increment('likes');
-        return back()->with('success', 'Voting berhasil.');
-    }
+{
+    $pengaduan = Pengaduan::findOrFail($id);
+    $pengaduan->increment('votes'); // Tambahkan 1 like
+    return back()->with('success', 'Terima kasih atas dukungan Anda!');
+}
 
-    public function comment(Request $request, $id)
-    {
-        $request->validate(['comment' => 'required']);
-        $pengaduan = Pengaduan::findOrFail($id);
-        $pengaduan->comments()->create(['comment' => $request->comment]);
-        return back()->with('success', 'Komentar berhasil ditambahkan.');
-    }
+public function comment(Request $request, $id)
+{
+    $request->validate([
+        'comment' => 'required|string|max:255',
+    ]);
+
+    $pengaduan = Pengaduan::findOrFail($id);
+
+    // Simpan komentar ke database
+    $pengaduan->komentars()->create([
+        'comment' => $request->comment,
+        'user_id' => auth()->id(),
+    ]);
+
+    return redirect()->route('pengaduan.show', $id)->with('success', 'Komentar berhasil ditambahkan!');
+}
+
+
+
+public function show($id)
+{
+    $pengaduan = Pengaduan::with(['komentars'])->findOrFail($id);
+    $pengaduan->increment('views'); // Tambah 1 view setiap kali halaman dilihat
+
+    return view('guest.detail', compact('pengaduan'));
+}
+
 
     public function getCities($provinceId)
     {

@@ -18,8 +18,30 @@
                 <li><a href="#" class="hover:text-yellow-300">Profile</a></li>
                 <li><a href="#" class="hover:text-yellow-300">Settings</a></li>
                 @if (Auth::check())
-                <li><a href="{{ route('logout') }}" class="hover:text-yellow-300">Logout</a></li>
-                @endif
+    <li>
+        <div class="text-center">
+            <h1 class="text-4xl font-bold text-gray-800">Welcome, {{ Auth::user()->name }}!</h1>
+            <p class="text-lg text-gray-600 mt-4">You are logged in.</p>
+            
+            <!-- Form logout -->
+            <form action="{{ route('logout.auth') }}" method="POST">
+                @csrf
+                <button type="submit" class="mt-6 inline-block bg-purple-500 text-white py-2 px-4 rounded hover:bg-purple-600">
+                    Logout
+                </button>
+            </form>
+        </div>
+    </li>
+@else
+    <li>
+        <div class="text-center">
+            <h1 class="text-4xl font-bold text-gray-800">Welcome, Guest!</h1>
+            <p class="text-lg text-gray-600 mt-4">You are logged in as a guest user.</p>
+            <a href="{{ route('login.page') }}" class="mt-6 inline-block bg-purple-500 text-white py-2 px-4 rounded hover:bg-purple-600">Login</a>
+        </div>
+    </li>
+@endif
+
             </ul>
         </aside>
 

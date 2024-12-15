@@ -1,8 +1,6 @@
 @extends('templates.app')
 
 @section('content')
-{{$errors}}
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 <main class="flex-1 p-10 bg-gray-100 bg-cover bg-center" style="background-image: url('https://i.pinimg.com/736x/75/c3/8b/75c38b45a23ce87850d791ca30a9f4b1.jpg');">
     <div class="bg-white bg-opacity-80 p-8 rounded-lg shadow-lg">
         <h1 class="text-4xl font-bold text-indigo-700 mb-4">Welcome to the Dashboard</h1>
@@ -15,6 +13,13 @@
             </div>
         @endif
 
+        <!-- Auth Check -->
+        @if (Auth::check())
+            <p class="text-gray-800 mt-4 font-medium">Welcome, <strong>{{ Auth::user()->email }}</strong></p>
+        @else
+            <p class="text-red-500 mt-4 font-medium">Anda belum login!</p>
+        @endif
+
         <!-- Dropdown Menu for Filtering -->
         <div class="mt-8">
             <label for="provinsiFilter" class="block text-sm text-gray-600 font-semibold">Filter Berdasarkan Provinsi</label>
@@ -25,10 +30,9 @@
         </div>
 
         <!-- Pengaduan List -->
-        
     </div>
-    
 </main>
+
 <div id="pengaduanList" class="mt-6">
     @if($pengaduans && $pengaduans->isNotEmpty())
         @foreach ($pengaduans as $pengaduan)
@@ -72,13 +76,6 @@
                             <i class="fas fa-paper-plane mr-2"></i> Kirim Komentar
                         </button>
                     </form>
-                    <!-- Voting Button -->
-                <form action="{{ route('pengaduan.vote', $pengaduan->id) }}" method="POST" class="mt-4">
-                    @csrf
-                    <button type="submit" class="w-full bg-blue-500 text-white px-4 py-2 rounded-lg text-xs hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-300">
-                        <i class="fas fa-thumbs-up mr-2"></i> Like
-                    </button>
-                </form>
                 </div>
             </article>
         @endforeach

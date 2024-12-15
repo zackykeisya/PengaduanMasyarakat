@@ -19,4 +19,10 @@ class Komentar extends Model
     {
         return $this->belongsTo(Pengaduan::class);
     }
+    
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+    
 }

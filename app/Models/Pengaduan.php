@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -9,19 +8,23 @@ class Pengaduan extends Model
 {
     use HasFactory;
 
+    protected $table = 'pengaduans'; // Pastikan ini sesuai dengan nama tabel Anda
+
     protected $fillable = [
-        'type', 'provinsi', 'regency', 'subdistrict', 'description', 'image', 'viewers', 'votes'
+        'type', 'subdistrict', 'regency', 'provinsi', 'description', 'image', 'viewers', 'votes'
     ];
-    
+
+ 
     
     
 
 
  // Relasi dengan Komentar
- public function user()
+public function komentars()
 {
-    return $this->belongsTo(User::class);
+    return $this->hasMany(Komentar::class);
 }
+
 
 }
 
